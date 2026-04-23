@@ -1,5 +1,9 @@
 {
   "name": "pos-backend",
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
+  },
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
