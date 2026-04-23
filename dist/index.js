@@ -1,0 +1,24 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require("dotenv/config");
+const node_server_1 = require("@hono/node-server");
+const hono_1 = require("hono");
+const auth_1 = require("./middleware/auth");
+const auth_2 = require("./routes/auth");
+const erp_1 = require("./routes/erp");
+const orders_1 = require("./routes/orders");
+const products_1 = require("./routes/products");
+const app = new hono_1.Hono();
+app.get("/", (c) => c.json({ service: "pos-backend", status: "ok" }));
+app.get("/health", (c) => c.json({ ok: true }));
+app.route("/auth", auth_2.authRoutes);
+app.use("/products/*", auth_1.authMiddleware);
+app.use("/orders/*", auth_1.authMiddleware);
+app.use("/erp/*", auth_1.authMiddleware);
+app.route("/products", products_1.productRoutes);
+app.route("/orders", orders_1.orderRoutes);
+app.route("/erp", erp_1.erpRoutes);
+const port = Number(process.env.PORT ?? 3001);
+(0, node_server_1.serve)({ fetch: app.fetch, port }, () => {
+    console.log(`POS backend listening on http://localhost:${port}`);
+});

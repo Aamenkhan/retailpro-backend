@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: pos-backend
+    env: node
+    plan: free
+    rootDir: .
+    buildCommand: npm ci && npx prisma generate && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: PORT
+        value: 10000
