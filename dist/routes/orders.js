@@ -29,7 +29,7 @@ exports.orderRoutes.post("/checkout", async (c) => {
     }
     const subtotal = items.reduce((sum, item) => {
         const product = productMap.get(item.productId);
-        return sum + Number(product.sellPrice) * item.quantity;
+        return sum + Number(product.retailPrice) * item.quantity;
     }, 0);
     const gstAmount = (subtotal * gstPercent) / 100;
     const total = subtotal + gstAmount;
@@ -49,13 +49,13 @@ exports.orderRoutes.post("/checkout", async (c) => {
         });
         for (const item of items) {
             const product = productMap.get(item.productId);
-            const lineTotal = Number(product.sellPrice) * item.quantity;
+            const lineTotal = Number(product.retailPrice) * item.quantity;
             await tx.orderItem.create({
                 data: {
                     orderId: created.id,
                     productId: item.productId,
                     quantity: item.quantity,
-                    unitPrice: product.sellPrice,
+                    unitPrice: product.retailPrice,
                     lineTotal: new prisma_1.Prisma.Decimal(lineTotal),
                 },
             });

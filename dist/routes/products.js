@@ -20,7 +20,7 @@ exports.productRoutes.post("/", async (c) => {
             description: body.description,
             categoryId: body.categoryId,
             costPrice: body.costPrice,
-            sellPrice: body.sellPrice,
+            retailPrice: body.retailPrice,
             stockQty: body.stockQty ?? 0,
         },
     });
@@ -62,6 +62,6 @@ exports.productRoutes.get("/stock/scan/:sku", async (c) => {
         sku: product.sku,
         name: product.name,
         stockQty: product.stockQty,
-        sellPrice: product.sellPrice,
+        retailPrice: product.retailPrice,
     });
 });
