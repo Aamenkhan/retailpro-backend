@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { PaymentMethod, Prisma, type Product } from "../../generated/prisma";
+import { PaymentMethod, Prisma, type Product } from "@prisma/client";
 import { prisma } from "../lib/prisma";
 
 type CheckoutItem = {
