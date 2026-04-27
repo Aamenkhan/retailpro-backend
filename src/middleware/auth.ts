@@ -2,7 +2,8 @@ import type { Context, Next } from "hono";
 import { verify } from "hono/jwt";
 
 type JwtPayload = {
-  sub: string;
+  sub: string;       // userId
+  shopId: string;    // tenant isolation ke liye
   role: string;
 };
 
@@ -23,7 +24,13 @@ export async function authMiddleware(c: Context, next: Next) {
 
   try {
     const payload = (await verify(token, secret, "HS256")) as JwtPayload;
+
+    // Context mein set karo — saari routes use karengi
     c.set("jwtPayload", payload);
+    c.set("userId", payload.sub);
+    c.set("shopId", payload.shopId);
+    c.set("role", payload.role);
+
     await next();
   } catch {
     return c.json({ message: "Invalid or expired token" }, 401);
